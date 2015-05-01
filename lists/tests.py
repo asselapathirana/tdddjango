@@ -3,8 +3,23 @@ from django.core.urlresolvers import resolve
 from lists.views import home_page
 from django.http import HttpRequest
 from django.template.loader import render_to_string
+from lists.models import Item
 
 # Create your tests here.
+
+class ItemModelTest(TestCase):
+    def test_saving_and_retrieving_items(self):
+        t=('The first ever item.', 'The second item now$.', '%#LXED KL thrid')
+        for text in t:
+            it = Item()
+            it.text = text
+            it.save()
+        noit = Item.objects.all() 
+        self.assertEqual(len(noit),len(t))
+        
+        for i,tt in enumerate(t):
+            self.assertEqual(noit[i].text,tt)
+
 class HomePageTest(TestCase):
     
     def test_root_url_resolves_to_home_page_view(self):
@@ -30,5 +45,5 @@ class HomePageTest(TestCase):
           #now directly render home.html with the valueset.
         expected = render_to_string('home.html',{'new_item_text': 'A new list item'})
           #is the response of home_page equal to this?
-        print (response.content.decode())
+        #print (response.content.decode())
         self.assertEqual(response.content.decode(), expected)
