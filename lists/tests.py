@@ -19,6 +19,8 @@ class ItemModelTest(TestCase):
         
         for i,tt in enumerate(t):
             self.assertEqual(noit[i].text,tt)
+            
+ 
 
 class HomePageTest(TestCase):
     
@@ -35,15 +37,46 @@ class HomePageTest(TestCase):
         
     def test_home_page_can_save_a_POST_request(self):
         #Setup
+        t='A new list item'
         request=HttpRequest()
         request.method='POST'
-        request.POST['item_text'] = 'A new list item'
+        request.POST['item_text'] = t
         #do-it
         response=home_page(request)
         #assert
-        self.assertIn("A new list item", response.content.decode())
-          #now directly render home.html with the valueset.
-        expected = render_to_string('home.html',{'new_item_text': 'A new list item'})
-          #is the response of home_page equal to this?
-        #print (response.content.decode())
-        self.assertEqual(response.content.decode(), expected)
+        #first via Item
+        self.assertEqual(Item.objects.count(),1) # should have 1 item
+        new_item=Item.objects.first()
+        self.assertEqual(new_item.text,t)        
+        
+    def test_home_page_redirects_after_POST(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['item_text'] = 'A new list item'
+        response = home_page(request)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')        
+        
+    def test_home_page_only_saves_items_when_necessary_ie_POSTed(self):
+        request = HttpRequest()
+        home_page(request)
+        self.assertEqual(Item.objects.count(), 0)
+ 
+        
+    def _test_home_page_only_saves_items_when_non_empty(self):
+        request = HttpRequest()
+        request.method="POST"
+        home_page(request)
+        self.assertEqual(Item.objects.count(), 0)
+        request.POST['item_text'] = None
+        self.assertEqual(Item.objects.count(), 0)
+        request.POST['item_text'] = ''
+        self.assertEqual(Item.objects.count(), 0)   
+        
+    def test_home_page_displays_all_list_items(self):
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
+        request = HttpRequest()
+        response = home_page(request)
+        self.assertIn('itemey 1', response.content.decode())
+        self.assertIn('itemey 2', response.content.decode())        
