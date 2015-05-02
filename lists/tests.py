@@ -8,6 +8,10 @@ from lists.models import Item
 # Create your tests here.
 
 class ListViewTest(TestCase):
+    def test_uses_list_template(self):
+        response = self.client.get('/lists/the-only-list-in-the-world/')
+        self.assertTemplateUsed(response, 'list.html')    
+
     def test_display_all_list_items(self):
         Item.objects.create(text='itemey 1')
         Item.objects.create(text='itemey 2')
@@ -83,10 +87,12 @@ class HomePageTest(TestCase):
         request.POST['item_text'] = ''
         self.assertEqual(Item.objects.count(), 0)   
         
-    def test_home_page_displays_all_list_items(self):
-        Item.objects.create(text='itemey 1')
-        Item.objects.create(text='itemey 2')
-        request = HttpRequest()
-        response = home_page(request)
-        self.assertIn('itemey 1', response.content.decode())
-        self.assertIn('itemey 2', response.content.decode())        
+    ### Duplicate test now.     ListViewTest.test_display_all_list_items 
+    ### does the same via the new URL scheme. 
+    #def test_home_page_displays_all_list_items(self):
+        #Item.objects.create(text='itemey 1')
+        #Item.objects.create(text='itemey 2')
+        #request = HttpRequest()
+        #response = home_page(request)
+        #self.assertIn('itemey 1', response.content.decode())
+        #self.assertIn('itemey 2', response.content.decode())        
