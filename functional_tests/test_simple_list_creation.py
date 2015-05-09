@@ -1,72 +1,11 @@
+from .base import FunctionalTest
 from selenium import webdriver
-from django.test import LiveServerTestCase
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.common.keys import Keys 
-import sys
-from unittest import skip
+from selenium.webdriver.common.keys import Keys
 
+class NewVisitorTest(FunctionalTest): #         
 
-class NewVisitorTest(StaticLiveServerTestCase): #
-    @classmethod
-    def setUpClass(cls): #
-        for arg in sys.argv: #
-            if 'liveserver' in arg: #
-                cls.server_url = 'http://' + arg.split('=')[1]
-                return #
-        super().setUpClass()
-        cls.server_url = cls.live_server_url
-    
-    @classmethod
-    def tearDownClass(cls): 
-        if cls.server_url == cls.live_server_url:
-            super().tearDownClass()        
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        #self.browser.implicitly_wait(3)
-    def tearDown(self):
-        self.browser.refresh()
-        self.browser.quit()
-        
-    def check_for_row_in_list_table(self, row_text):
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr') 
-        self.assertIn(row_text, [row.text for row in rows])
-        
-    @skip
-    def test_cannot_add_empty_list_items(self):
-        # Edith goes to the home page and accidentally tries to submit
-        # an empty list item. She hits Enter on the empty input box
-        # The home page refreshes, and there is an error message saying
-        # that list items cannot be blank
-        # She tries again with some text for the item, which now works
-        # Perversely, she now decides to submit a second blank list item
-        # She receives a similar warning on the list page
-        # And she can correct it by filling some text in
-        self.fail('write me!')        
-        
-    def test_layout_and_styling(self):
-        # Edith goes to the home page
-        self.browser.get(self.server_url)
-        self.browser.set_window_size(1024, 768)
-        # She notices the input box is nicely centered
-        inputbox = self.browser.find_element_by_id('id_new_item')
-        self.assertAlmostEqual(
-        inputbox.location['x'] + inputbox.size['width'] / 2,
-        512,
-        delta=5
-        )    
-        # She starts a new list and sees the input is nicely
-        # centered there too
-        inputbox.send_keys('testing\n')
-        inputbox = self.browser.find_element_by_id('id_new_item')
-        self.assertAlmostEqual(
-        inputbox.location['x'] + inputbox.size['width'] / 2,
-        512,
-        delta=5
-        )        
-        
     def test_can_start_a_list_and_retrieve_it_later(self):
-    
+
         # Edith has heard about a cool new online to-do app. She goes
         # to check out its homepage
         self.browser.get(self.server_url)
@@ -80,7 +19,7 @@ class NewVisitorTest(StaticLiveServerTestCase): #
         # She types "Buy peacock feathers" into a text box (Edith's hobby
         # is tying fly-fishing lures)
         inputbox.send_keys('Buy peacock feathers')
-        
+
         # When she hits enter, the page updates, and now the page lists
         # "1: Buy peacock feathers" as an item in a to-do list
         inputbox.send_keys(Keys.ENTER)
@@ -97,7 +36,7 @@ class NewVisitorTest(StaticLiveServerTestCase): #
         rows = table.find_elements_by_tag_name('tr')
         self.check_for_row_in_list_table('1: Buy peacock feathers')
         self.check_for_row_in_list_table('2: Use peacock feathers to make a fly')
-        
+
         #Now a new user, Francis, comes along to the site.
         ## We use a new browser session to make sure that no information
         ## of Edith's is coming through from cookies etc #
@@ -124,5 +63,3 @@ class NewVisitorTest(StaticLiveServerTestCase): #
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertIn('Buy milk', page_text)
         # Satisfied, they both go back to sleep        
-   
-
