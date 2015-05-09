@@ -1,0 +1,2 @@
+export DATABASE_URL=postgres://testadmin:testing@localhost/django_testdb
+
