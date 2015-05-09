@@ -1,0 +1,4 @@
+
+Destroy database on heroku : heroku pg:reset DATABASE
+
+Migrate on heroku: heroku run python manage.py syncdb
