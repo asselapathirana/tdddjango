@@ -5,6 +5,7 @@ from django.http import HttpRequest
 from django.template.loader import render_to_string
 from lists.models import Item, List
 from django.utils.html import escape
+from lists.forms import ItemForm
 
 # Create your tests here.
 
@@ -114,41 +115,15 @@ class ListViewTest(TestCase):
         self.assertContains(response, expected_error)    
 
 class HomePageTest(TestCase):
+    maxDiff = None
+
+        
+    def test_home_page_renders_home_template(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'home.html') #
     
-    def test_root_url_resolves_to_home_page_view(self):
-        found=resolve('/')
-        
-        self.assertEqual(found.func,home_page)
-        
-    def test_home_page_returns_correct_html_page(self):
-        request=HttpRequest()
-        response=home_page(request)
-        expected=render_to_string('home.html')
-        self.assertEqual(response.content.decode(),expected)
+    def test_home_page_uses_item_form(self):
+        response = self.client.get('/')
+        self.assertIsInstance(response.context['form'], ItemForm) #    
         
         
-    def test_home_page_only_saves_items_when_necessary_ie_POSTed(self):
-        request = HttpRequest()
-        home_page(request)
-        self.assertEqual(Item.objects.count(), 0)
- 
-        
-    def _test_home_page_only_saves_items_when_non_empty(self):
-        request = HttpRequest()
-        request.method="POST"
-        home_page(request)
-        self.assertEqual(Item.objects.count(), 0)
-        request.POST['item_text'] = None
-        self.assertEqual(Item.objects.count(), 0)
-        request.POST['item_text'] = ''
-        self.assertEqual(Item.objects.count(), 0)   
-        
-    ### Duplicate test now.     ListViewTest.test_display_all_list_items 
-    ### does the same via the new URL scheme. 
-    #def test_home_page_displays_all_list_items(self):
-        #Item.objects.create(text='itemey 1')
-        #Item.objects.create(text='itemey 2')
-        #request = HttpRequest()
-        #response = home_page(request)
-        #self.assertIn('itemey 1', response.content.decode())
-        #self.assertIn('itemey 2', response.content.decode())        
