@@ -20,9 +20,9 @@
 <script src="../list.js"></script>
 <script>
 /*global $, test, equal */
-test("errors should be hidden on keypress", function () {
+test("errors should be hidden on click", function () {
     $('.has-error').show();
-    $('input').trigger('keypress'); //
+    $('input').trigger('click'); //
     equal($('.has-error').is(':visible'), false);
 });
 

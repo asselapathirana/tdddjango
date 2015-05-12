@@ -1,6 +1,7 @@
 from .base import FunctionalTest
 from unittest import skip
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver import ActionChains
 class ItemValidationTest(FunctionalTest):
     
     def get_error_element(self):
@@ -57,7 +58,22 @@ class ItemValidationTest(FunctionalTest):
         error = self.get_error_element()
         self.assertTrue(error.is_displayed()) #
         # She starts typing in the input box to clear the error
+        
         self.get_item_input_box().send_keys('a')    
         # She is pleased to see that the error message disappears
         error = self.get_error_element()
-        self.assertFalse(error.is_displayed())        
+        self.assertFalse(error.is_displayed())           
+       
+    
+    def test_error_messages_are_cleared_on_click_in_textbox(self):
+        # Edith starts a new list in a way that causes a validation error:
+        self.browser.get(self.server_url)
+        self.get_item_input_box().send_keys('\n')
+        error = self.get_error_element()
+        self.assertTrue(error.is_displayed()) #            
+        # She clicks on the input box. 
+        self.get_item_input_box().click()
+            
+        # She is pleased to see that the error message disappears
+        error = self.get_error_element()
+        self.assertFalse(error.is_displayed())         
