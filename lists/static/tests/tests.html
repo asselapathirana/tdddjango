@@ -22,9 +22,11 @@
 /*global $, test, equal */
 test("errors should be hidden on keypress", function () {
     $('.has-error').show();
-    $('input').trigger('keypress'); //
+    $('input[name=text]').trigger('keypress'); //
     equal($('.has-error').is(':visible'), false);
 });
+
+
 
 test("errors not be hidden unless there is a keypress or click", function () {
     equal($('.has-error').is(':visible'), true);
