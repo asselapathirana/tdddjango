@@ -1,0 +1,6 @@
+[all:vars]
+env=dev
+[su]
+test.pathirana.net ansible_connection=ssh ansible_ssh_pass={{supassword}} 
+
+

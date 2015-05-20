@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <title>To-Do lists</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"> <!-- avoid persona breaking in IE compatibility mode-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="/static/base.css" rel="stylesheet" media="screen">
@@ -10,7 +11,7 @@
 <div class="container">
 <nav class="navbar navbar-default" role="navigation">
 <a class="navbar-brand" href="/">Superlists</a>
-<a class="btn navbar-btn navbar-right" id="login" href="#">Sign in</a>
+<a class="btn navbar-btn navbar-right" id="id_login" href="#">Sign in</a>
 </nav>
 <div class="row">
 <div class="col-md-6 col-md-offset-3 jumbotron">
@@ -37,7 +38,15 @@
 </div>
 </div>
 <script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="https://login.persona.org/include.js"></script>
+<script src="/static/accounts.js"></script>
 <script src="/static/list.js"></script>
+<script>
+    /*global $, Superlists, navigator */
+    $(document).ready(function () {
+        Superlists.Accounts.initialize(navigator);
+    });
+</script>
 </body>
 </html>
 </body>
