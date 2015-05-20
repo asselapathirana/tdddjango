@@ -58,6 +58,9 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+on_heroku = false
+if 'DYNO' in os.environ:
+    on_heroku = true
 
 #DATABASES = {
  #   'default': {
@@ -65,9 +68,21 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
  #       'NAME': 'db.sqlite3',
  #   }
 #}
-import dj_database_url
-DATABASES =  {'default': dj_database_url.config()}
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+if on_heroku:
+    import dj_database_url
+    DATABASES =  {'default': dj_database_url.config()}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.getenv('DATABASE_NAME', 'superlists'),
+            'USER': os.getenv('DATABASE_USER', 'superlists'),
+            'PASSWORD': os.getenv('DATABASE_PASSWORD', 'password'),
+            'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
+            'PORT': os.getenv('DATABASE_PORT', '5432'),
+        }
+    }    
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 

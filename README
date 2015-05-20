@@ -42,4 +42,6 @@ ansible-playbook -i rootf sshkey.yml -u root  --ask-vault-pass
 ansible-playbook -i development -u remoteu 
 4. Running command "ansible-playbook -i development -u root ..." better to use -vvv option. 
 
+editing vaulted files ansible-vault edit --vault-password-file ~/.vault_pass.txt env_vars/dev.yml
 
+ansible-playbook -i development  site.yml --vault-password-file ~/.vault_pass.txt 
