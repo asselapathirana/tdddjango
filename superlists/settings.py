@@ -58,9 +58,9 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-on_heroku = false
+on_heroku = False
 if 'DYNO' in os.environ:
-    on_heroku = true
+    on_heroku = True
 
 #DATABASES = {
  #   'default': {
