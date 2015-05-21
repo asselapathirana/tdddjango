@@ -33,6 +33,9 @@ Implementing on an Ubuntu VPS
 : 
 2. ./ed env_vars/pass.yml and change the root password (supassword). 
 
+ssh-keygen -f "/home/pathirana/.ssh/known_hosts" -R  <host> 
+
+
 #create user remoteuser
 ansible-playbook -i rootf sshkey.yml -u root  --vault-password-file ~/.vault_pass.txt
 (or use ./setkey)

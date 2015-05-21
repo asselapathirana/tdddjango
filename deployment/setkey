@@ -1,1 +1,1 @@
-ansible-playbook -i rootf sshkey.yml -u root  --vault-password-file ~/.vault_pass.txt $1 $2 $3 $4
+ansible-playbook -i rootf sshkey.yml -u root  --vault-password-file ~/.vault_pass.txt $1 $2 $3 $4 
