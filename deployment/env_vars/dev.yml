@@ -4,9 +4,6 @@
 setup_git_repo: yes
 git_branch: master
 
-#locale 
-locale: en_GB.UTF-8
-
 # Database settings.
 db_user: "{{ application_name }}"
 db_name: "{{ application_name }}"

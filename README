@@ -28,22 +28,15 @@ python manage.py test functional_tests --liverserver=localhost:8000
 -----
 
 Implementing on an Ubuntu VPS
-1. Consider upgrading ansible to latest version (>1.8 was needed) using ppa:ansible/ansible 
-2. login to server as root and change password. Set locale: 
-export LANGUAGE=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-locale-gen en_US.UTF-8
-dpkg-reconfigure locales
+: at the development node:
+ -  Consider upgrading ansible to latest version (>1.8 was needed) using ppa:ansible/ansible 
+: 
+2. ./ed env_vars/pass.yml and change the root password (supassword). 
 
-#create user remoteu
-ansible-playbook -i rootf sshkey.yml -u root  --ask-vault-pass
+#create user remoteuser
+ansible-playbook -i rootf sshkey.yml -u root  --vault-password-file ~/.vault_pass.txt
+(or use ./setkey)
 #This user should be able to login and sudo without password
-ansible-playbook -i development -u remoteu 
-4. Running command "ansible-playbook -i development -u root ..." better to use -vvv option. 
-
-editing vaulted files (only env_vars/pass.yml) 
-ansible-vault edit --vault-password-file ~/.vault_pass.txt env_vars/dev.yml
-or ./ed env_vars/dev.yml
 
 ansible-playbook -i development  site.yml --vault-password-file ~/.vault_pass.txt 
+(or use ./setup)

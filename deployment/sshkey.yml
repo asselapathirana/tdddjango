@@ -7,9 +7,35 @@
     - env_vars/sshkey.yml
     - env_vars/pass.yml # always use last
 
+  vars: 
+   locale_env:
+    LANG: "{{lookup('env', 'LANG')}}"
+    LANGUAGE: "{{ lookup('env', 'LANGUAGE') }}"
+    LC_CTYPE: "{{ lookup('env', 'LC_CTYPE') }}"
+    LC_NUMERIC: "{{ lookup('env', 'LC_NUMERIC') }}"
+    LC_TIME: "{{ lookup('env', 'LC_NUMERIC') }}"
+    LC_COLLATE: "{{ lookup('env', 'LC_COLLATE') }}"
+    LC_MONETARY: "{{ lookup('env', 'LC_MONETARY') }}"
+    LC_MESSAGES: "{{ lookup('env', 'LC_MESSAGES') }}"
+    LC_PAPER: "{{ lookup('env', 'LC_PAPER') }}"
+    LC_NAME: "{{ lookup('env', 'LC_NAME') }}"
+    LC_ADDRESS: "{{ lookup('env', 'LC_ADDRESS') }}"
+    LC_TELEPHONE: "{{ lookup('env', 'LC_TELEPHONE') }}"
+    LC_MEASUREMENT: "{{ lookup('env', 'LC_MEASUREMENT') }}"
+    LC_IDENTIFICATION: "{{ lookup('env', 'LC_IDENTIFICATION') }}"
+    LC_ALL: "{{ lookup('env', 'LC_ALLL') }}"
 
-
+  
   tasks:
+  - name: install language packs {{language_packs}} 
+    command: apt-get install {{language_packs}} -y
+    tags: locale
+  
+  - name: copy /etc/default/locale file from management machine to host
+    copy: src=/etc/default/locale dest=/etc/default/locale owner=root group=root mode=0644
+    tags: locale
+
+
   - name: Create group "{{remote_group}}"
     group: name="{{remote_group}}" state=present
     tags: user
@@ -25,3 +51,10 @@
 
   - name: Setup | User can sudo without password
     lineinfile: "dest=/etc/sudoers state=present regexp='^%{{ remote_group }} ' line='%{{ remote_group }} ALL=(ALL) NOPASSWD: ALL'"
+
+
+  handlers: 
+    - name: dpkg-reconfigure
+      command: dpkg-reconfigure locales
+      environment: locale_env
+      sudo: true
