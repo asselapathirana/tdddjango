@@ -10,7 +10,10 @@
   vars_files:
     - env_vars/base.yml
     - env_vars/{{ env }}.yml
+    - env_vars/pass.yml # always use last
+
 
   roles:
+    - pip
     - base
     - web

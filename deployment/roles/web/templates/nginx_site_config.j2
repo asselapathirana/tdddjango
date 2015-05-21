@@ -6,18 +6,10 @@ upstream wsgi_server {
   server unix:{{ virtualenv_path }}/run/gunicorn.sock fail_timeout=0;
 }
 
-server {
-    listen      80;
-    server_name {{ nginx_server_name }};
-    rewrite     ^ https://$server_name$request_uri? permanent;
-}
 
 server {
-    listen              443;
+    listen              80;
     server_name         {{ nginx_server_name }};
-	ssl on;
-	ssl_certificate     {{ ssl_dest_dir }}/{{ application_name }}.crt;
-	ssl_certificate_key {{ ssl_dest_dir }}/{{ application_name }}.key;
 
     client_max_body_size 4G;
 
@@ -37,10 +29,10 @@ server {
             return 503;
         }
 
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto https;
-        proxy_set_header Host $http_host;
-        proxy_redirect off;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #proxy_set_header X-Forwarded-Proto https;
+        #proxy_set_header Host $http_host;
+        #proxy_redirect off;
 
         # Try to serve static files from nginx, no point in making an
         # *application* server like Unicorn/Rainbows! serve static files.

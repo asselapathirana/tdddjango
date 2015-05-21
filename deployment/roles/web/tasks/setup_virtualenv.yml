@@ -1,11 +1,13 @@
 ---
 
-- name: Create the virtualenv
-  command: virtualenv {{ virtualenv_path }} --no-site-packages
-           creates={{ virtualenv_path }}/bin/activate
+#- name: Create the virtualenv
+#  command: virtualenv-3.4 {{ virtualenv_path }}  --python=/usr/bin/pyton3 --no-site-packages
+#           creates={{ virtualenv_path }}/bin/activate
 
-- name: Ensure gunicorn is installed
-  pip: virtualenv={{ virtualenv_path }} name=gunicorn
+- name: Make sure python 3.4 virtual env is installed and gunicorn is there. 
+  pip: virtualenv={{ virtualenv_path }} virtualenv_command=/usr/local/bin/virtualenv-3.4 name=gunicorn 
+  tags: py 
+
 
 - name: Create the Gunicorn script file
   template: src=gunicorn_start.j2
