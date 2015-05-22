@@ -1,8 +1,0 @@
----
-
-git_repo: https://github.com/asselapathirana/tdddjango.git
-
-project_name: superlists
-application_name: superlists
-#version: vps_test
-version: HEAD

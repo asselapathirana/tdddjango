@@ -1,7 +1,0 @@
----
-remote_user: "{{remoteu}}"
-remote_group: "{{remoteu}}"
-remote_password: passwd
-supassword: passwd
-language_packs: "language-pack-nl language-pack-en"
-
