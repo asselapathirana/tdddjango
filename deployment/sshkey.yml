@@ -9,8 +9,10 @@
 
   
   tasks:
-  - name: update apt-cache
-    apt: update_cache=yes name=sudo # name is fake
+  
+#  - name: update apt-cache
+#    apt: update_cache=yes name=sudo # name is fake
+
   - name: install language packs {{language_packs}} 
     command: apt-get install {{language_packs}} -y
     tags: locale
