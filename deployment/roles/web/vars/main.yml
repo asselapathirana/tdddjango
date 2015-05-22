@@ -20,7 +20,7 @@ nginx_access_log_file: "{{ application_log_dir }}/nginx_access.log"
 nginx_error_log_file: "{{ application_log_dir }}/nginx_error.log"
 nginx_static_dir: "{{ virtualenv_path }}/static/"
 nginx_media_dir: "{{ virtualenv_path }}/media/"
-
+nginx_wsgi_server_name: "{{application_name}}_server"
 
 # Django Environment variables
 django_environment:
