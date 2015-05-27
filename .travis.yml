@@ -1,6 +1,5 @@
 env: 
-  - DATABASE_NAME=superlists DATABASE_USER: postgres
-
+  - DATABASE_NAME=superlists DATABASE_USER=postgres NOSSL=1
 language: python
 python:
   - "3.4"

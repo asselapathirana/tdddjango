@@ -19,7 +19,7 @@ class LoginTest(FunctionalTest):
       lambda b: b.find_element_by_id(element_id)
     )        
 
-  def test_login_with_persona(self):
+  def _test_login_with_persona(self):
     # Edith goes to the awesome superlists site
     # and notices a "Sign in" link for the first time.
     self.browser.get(self.server_url)
