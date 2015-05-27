@@ -1,6 +1,5 @@
 env: 
-  - DATABASE_NAME: superlists
-  - DATABASE_USER: postgres
+  - DATABASE_NAME=superlists DTABASE_USER: postgres
 
 language: python
 python:
@@ -10,7 +9,6 @@ python:
 install: "pip install -r requirements.txt"
 #before teste
 before_script:
-  - psql -c 'create database ;' -U postgres
-
+    - psql -c 'create database travis_ci_test;' -U postgres
 # command to run tests
 script: python manage.py test functional_tests
