@@ -1,2 +1,4 @@
 export DATABASE_URL=postgres://testadmin:testing@localhost/django_testdb
-
+export DATABASE_NAME=django_testdb
+export DATABASE_USER=testadmin
+export DATABASE_PASSWORD=testing
