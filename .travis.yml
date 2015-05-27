@@ -1,8 +1,16 @@
+env: 
+  - DATABASE_NAME: superlists
+  - DATABASE_USER: postgres
+
 language: python
 python:
   - "3.4"
   - "nightly"
 # command to install dependencies
 install: "pip install -r requirements.txt"
+#before teste
+before_script:
+  - psql -c 'create database ;' -U postgres
+
 # command to run tests
-script: python manage.py functional_tests
+script: python manage.py test functional_tests
